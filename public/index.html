@@ -4,18 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Unfair Advantage Finder</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --orange: #E8571A;
-  --orange-light: #f97316;
-  --orange-glow: rgba(232,87,26,0.12);
   --bg: #1a1410;
-  --bg2: #211a13;
   --card: #271f17;
   --card2: #2e2419;
   --border: #3a2e22;
-  --border-light: #4a3c2c;
   --text: #f0e8dc;
   --text2: #c4b49a;
   --muted: #8a7a68;
@@ -23,271 +19,192 @@
   --cream: #f5efe6;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-body::after {
-  content:'';
-  position:fixed;
-  inset:0;
-  background: radial-gradient(ellipse at 20% 0%, rgba(232,87,26,0.06) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 100%, rgba(196,146,42,0.04) 0%, transparent 50%);
-  pointer-events:none;
-  z-index:0;
-}
-.container { max-width:640px; margin:0 auto; padding:0 20px 80px; position:relative; z-index:1; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-weight:300; min-height:100vh; }
+.wrap { max-width:620px; margin:0 auto; padding:0 20px 80px; }
 
-.header { padding:52px 0 44px; text-align:center; }
-.header-eyebrow {
-  display:inline-flex; align-items:center; gap:8px;
-  background:var(--orange-glow); border:1px solid rgba(232,87,26,0.25);
-  color:var(--orange-light); font-size:10px; letter-spacing:3px; text-transform:uppercase;
-  padding:5px 14px; margin-bottom:22px; font-weight:500;
-}
-.header h1 {
-  font-family:'Bebas Neue',sans-serif; font-size:clamp(46px,10vw,76px);
-  line-height:0.92; letter-spacing:3px; color:var(--cream); margin-bottom:18px;
-}
-.header h1 em { color:var(--orange); font-style:normal; }
-.header-desc {
-  font-family:'Lora',serif; font-style:italic; color:var(--text2);
-  font-size:16px; line-height:1.65; max-width:420px; margin:0 auto;
-}
+.header { padding:48px 0 36px; text-align:center; }
+.eyebrow { display:inline-block; background:rgba(232,87,26,0.12); border:1px solid rgba(232,87,26,0.25); color:#f97316; font-size:10px; letter-spacing:3px; text-transform:uppercase; padding:5px 14px; margin-bottom:20px; }
+h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(44px,10vw,72px); line-height:0.92; letter-spacing:3px; color:var(--cream); margin-bottom:16px; }
+h1 span { color:var(--orange); }
+.tagline { font-family:'Lora',serif; font-style:italic; color:var(--text2); font-size:15px; line-height:1.65; max-width:400px; margin:0 auto; }
 
-.steps-row { display:flex; align-items:center; justify-content:center; margin-bottom:44px; }
-.step-item { display:flex; flex-direction:column; align-items:center; gap:6px; }
-.step-circle {
-  width:32px; height:32px; border-radius:50%; border:1.5px solid var(--border-light);
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:1px;
-  color:var(--muted); transition:all 0.3s; background:var(--bg2);
-}
-.step-circle.active { border-color:var(--orange); color:var(--orange); background:var(--orange-glow); box-shadow:0 0 12px rgba(232,87,26,0.2); }
+/* Steps */
+.steps { display:flex; align-items:center; justify-content:center; margin-bottom:40px; }
+.step { display:flex; flex-direction:column; align-items:center; gap:5px; }
+.step-circle { width:30px; height:30px; border-radius:50%; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--muted); background:var(--bg); transition:all 0.3s; }
+.step-circle.on { border-color:var(--orange); color:var(--orange); background:rgba(232,87,26,0.1); }
 .step-circle.done { border-color:var(--orange); background:var(--orange); color:white; }
-.step-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
-.step-label.active { color:var(--orange-light); }
-.step-line { width:48px; height:1px; background:var(--border); margin:0 4px 18px; transition:background 0.3s; }
+.step-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.step-label.on { color:#f97316; }
+.step-line { width:44px; height:1px; background:var(--border); margin:0 4px 16px; transition:background 0.3s; }
 .step-line.done { background:var(--orange); }
 
-.section { display:none; }
-.section.active { display:block; animation:fadeUp 0.45s ease forwards; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+/* Sections */
+.sec { display:none; }
+.sec.show { display:block; animation:up 0.4s ease; }
+@keyframes up { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 
-.section-eyebrow { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--orange); margin-bottom:8px; font-weight:500; }
-.section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(28px,7vw,44px); line-height:1.0; color:var(--cream); margin-bottom:6px; letter-spacing:1px; }
-.section-sub { font-family:'Lora',serif; font-style:italic; color:var(--text2); font-size:14px; line-height:1.65; margin-bottom:36px; }
+.sec-eye { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--orange); margin-bottom:6px; font-weight:500; }
+.sec-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(26px,6vw,40px); color:var(--cream); margin-bottom:6px; letter-spacing:1px; }
+.sec-sub { font-family:'Lora',serif; font-style:italic; color:var(--text2); font-size:14px; line-height:1.6; margin-bottom:32px; }
 
-.input-group { margin-bottom:22px; }
-.input-label { display:block; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text2); margin-bottom:8px; font-weight:500; }
-.input-wrap { position:relative; }
-.input-prefix { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--orange); font-family:'Bebas Neue',sans-serif; font-size:20px; pointer-events:none; }
-
-input[type="number"], select {
-  width:100%; background:var(--card); border:1px solid var(--border);
-  color:var(--cream); font-family:'DM Sans',sans-serif; font-size:15px;
-  padding:14px 16px; outline:none; transition:border-color 0.2s,background 0.2s;
-  -moz-appearance:textfield; appearance:none; border-radius:2px;
+/* Inputs */
+.field { margin-bottom:20px; }
+.label { display:block; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text2); margin-bottom:7px; font-weight:500; }
+.pfx { position:relative; }
+.pfx-sym { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--orange); font-family:'Bebas Neue',sans-serif; font-size:20px; pointer-events:none; }
+input[type=number], select, textarea {
+  width:100%; background:var(--card); border:1px solid var(--border); color:var(--cream);
+  font-family:'DM Sans',sans-serif; font-size:14px; padding:13px 14px; outline:none;
+  transition:border-color 0.2s; border-radius:2px; appearance:none; -moz-appearance:textfield;
 }
-input[type="number"] { padding-left:32px; font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:1px; }
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
-input:focus, select:focus { border-color:var(--orange); background:var(--card2); }
-input::placeholder { color:var(--border-light); }
-select {
-  cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7a68' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-  background-repeat:no-repeat; background-position:right 14px center; padding-right:36px;
-}
-select option { background:var(--bg2); }
+input[type=number] { padding-left:30px; font-family:'Bebas Neue',sans-serif; font-size:22px; }
+input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; }
+input:focus, select:focus, textarea:focus { border-color:var(--orange); }
+input::placeholder, textarea::placeholder { color:#4a3c2c; font-style:italic; }
+select { cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5z' fill='%238a7a68'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px; }
+select option { background:var(--bg); }
+textarea { resize:none; line-height:1.6; min-height:78px; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 
-.two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+/* Freedom display */
+.freedom { display:none; background:var(--card2); border:1px solid var(--border); border-left:3px solid var(--orange); border-radius:2px; margin:24px 0 0; overflow:hidden; }
+.freedom.show { display:block; animation:up 0.3s ease; }
+.freedom-top { padding:20px 22px 16px; border-bottom:1px solid var(--border); }
+.freedom-lbl { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.freedom-num { font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--orange); letter-spacing:2px; line-height:1; margin-bottom:4px; }
+.freedom-msg { font-family:'Lora',serif; font-style:italic; font-size:13px; color:var(--text2); line-height:1.5; }
+.freedom-grid { display:grid; grid-template-columns:1fr 1fr 1fr; border-top:1px solid var(--border); }
+.fg-item { padding:14px 16px; border-right:1px solid var(--border); }
+.fg-item:last-child { border-right:none; }
+.fg-val { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--cream); margin-bottom:2px; }
+.fg-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+.chips { padding:14px 18px; background:var(--card); border-top:1px solid var(--border); }
+.chips-lbl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.chips-wrap { display:flex; flex-wrap:wrap; gap:7px; }
+.chip { background:rgba(232,87,26,0.1); border:1px solid rgba(232,87,26,0.2); color:#f97316; font-size:12px; padding:4px 9px; border-radius:2px; }
 
-.freedom-display {
-  background:var(--card2); border:1px solid var(--border); border-left:3px solid var(--orange);
-  margin:28px 0 0; overflow:hidden; display:none; border-radius:2px;
-}
-.freedom-display.visible { display:block; animation:fadeUp 0.35s ease; }
-.freedom-main { padding:24px 24px 20px; border-bottom:1px solid var(--border); }
-.freedom-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.freedom-amount { font-family:'Bebas Neue',sans-serif; font-size:52px; color:var(--orange); letter-spacing:2px; line-height:1; margin-bottom:6px; }
-.freedom-message { font-family:'Lora',serif; font-style:italic; font-size:13px; color:var(--text2); line-height:1.55; }
-.freedom-breakdown { display:grid; grid-template-columns:1fr 1fr 1fr; }
-.breakdown-item { padding:16px 18px; border-right:1px solid var(--border); }
-.breakdown-item:last-child { border-right:none; }
-.breakdown-value { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--cream); letter-spacing:1px; margin-bottom:3px; }
-.breakdown-label { font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; line-height:1.3; }
-.equivalents-row { padding:16px 20px; background:var(--card); border-top:1px solid var(--border); }
-.equivalents-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-.equivalents-chips { display:flex; flex-wrap:wrap; gap:8px; }
-.chip { background:var(--orange-glow); border:1px solid rgba(232,87,26,0.2); color:var(--orange-light); font-size:12px; padding:5px 10px; border-radius:2px; }
+/* Buttons */
+.btn { background:var(--orange); color:white; border:none; font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:2px; padding:17px 28px; cursor:pointer; width:100%; margin-top:10px; border-radius:2px; box-shadow:0 4px 18px rgba(232,87,26,0.2); transition:background 0.2s, box-shadow 0.2s; }
+.btn:hover { background:#d14d15; box-shadow:0 6px 24px rgba(232,87,26,0.35); }
+.btn:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; box-shadow:none; }
+.btn-back { background:transparent; color:var(--muted); border:1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 16px; cursor:pointer; margin-bottom:28px; border-radius:2px; transition:color 0.2s; width:auto; }
+.btn-back:hover { color:var(--text2); }
 
-.question-block { margin-bottom:26px; }
-.question-num { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:3px; color:var(--orange); margin-bottom:4px; }
-.question-text { font-size:15px; color:var(--cream); font-weight:500; margin-bottom:4px; line-height:1.4; }
-.question-hint { font-family:'Lora',serif; font-style:italic; font-size:12px; color:var(--muted); margin-bottom:10px; line-height:1.5; }
-textarea {
-  width:100%; background:var(--card); border:1px solid var(--border);
-  color:var(--cream); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:300;
-  padding:14px 16px; outline:none; resize:none; line-height:1.6;
-  transition:border-color 0.2s,background 0.2s; min-height:80px; border-radius:2px;
-}
-textarea:focus { border-color:var(--orange); background:var(--card2); }
-textarea::placeholder { color:var(--border-light); font-style:italic; }
+/* Questions */
+.q-block { margin-bottom:24px; }
+.q-num { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:3px; color:var(--orange); margin-bottom:3px; }
+.q-text { font-size:15px; color:var(--cream); font-weight:500; margin-bottom:3px; line-height:1.4; }
+.q-hint { font-family:'Lora',serif; font-style:italic; font-size:12px; color:var(--muted); margin-bottom:8px; }
 
-.btn-primary {
-  background:var(--orange); color:white; border:none;
-  font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px;
-  padding:18px 32px; cursor:pointer; width:100%; margin-top:12px;
-  transition:background 0.2s,transform 0.1s,box-shadow 0.2s;
-  border-radius:2px; box-shadow:0 4px 20px rgba(232,87,26,0.2);
-}
-.btn-primary:hover { background:#d14d15; box-shadow:0 6px 28px rgba(232,87,26,0.35); }
-.btn-primary:active { transform:scale(0.99); }
-.btn-primary:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; box-shadow:none; }
-.btn-back {
-  background:transparent; color:var(--muted); border:1px solid var(--border);
-  font-family:'DM Sans',sans-serif; font-size:13px; padding:9px 18px;
-  cursor:pointer; margin-bottom:32px; transition:color 0.2s,border-color 0.2s; border-radius:2px;
-}
-.btn-back:hover { color:var(--text2); border-color:var(--border-light); }
-
-.loading-screen { text-align:center; padding:70px 20px; }
-.loading-ring { width:52px; height:52px; border:2px solid var(--border); border-top-color:var(--orange); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 24px; }
+/* Loading */
+.loading { text-align:center; padding:60px 20px; }
+.spinner { width:48px; height:48px; border:2px solid var(--border); border-top-color:var(--orange); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px; }
 @keyframes spin { to{transform:rotate(360deg)} }
-.loading-title { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:3px; color:var(--cream); margin-bottom:8px; }
-.loading-sub { font-family:'Lora',serif; font-style:italic; font-size:14px; color:var(--muted); line-height:1.6; }
+.loading-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; color:var(--cream); margin-bottom:6px; }
+.loading-sub { font-family:'Lora',serif; font-style:italic; font-size:13px; color:var(--muted); }
 
-.results-header { text-align:center; padding:8px 0 32px; }
-.results-header p { font-family:'Lora',serif; font-style:italic; color:var(--text2); font-size:15px; line-height:1.65; max-width:480px; margin:0 auto; }
+/* Results */
+.big-fn { background:linear-gradient(135deg,var(--orange),#c44010); padding:28px 24px; text-align:center; margin-bottom:28px; border-radius:3px; box-shadow:0 8px 28px rgba(232,87,26,0.22); }
+.big-fn .lbl { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:6px; }
+.big-fn .num { font-family:'Bebas Neue',sans-serif; font-size:60px; color:white; letter-spacing:3px; line-height:1; margin-bottom:4px; }
+.big-fn .sub { font-family:'Lora',serif; font-style:italic; font-size:13px; color:rgba(255,255,255,0.7); }
+.bk3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:28px; }
+.bk3-item { background:var(--card); border:1px solid var(--border); padding:14px 10px; text-align:center; border-radius:2px; }
+.bk3-val { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--orange); margin-bottom:3px; }
+.bk3-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; line-height:1.3; }
 
-.big-freedom-box {
-  background:linear-gradient(135deg,var(--orange) 0%,#c44010 100%);
-  padding:32px 28px; text-align:center; margin-bottom:32px; border-radius:3px;
-  box-shadow:0 8px 32px rgba(232,87,26,0.25);
-}
-.big-freedom-box .label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.65); margin-bottom:8px; }
-.big-freedom-box .number { font-family:'Bebas Neue',sans-serif; font-size:68px; color:white; letter-spacing:3px; line-height:1; margin-bottom:6px; }
-.big-freedom-box .sub { font-family:'Lora',serif; font-style:italic; font-size:14px; color:rgba(255,255,255,0.75); }
+.greet { background:var(--card); border:1px solid var(--border); padding:20px 22px; margin-bottom:22px; border-radius:2px; }
+.greet p { font-family:'Lora',serif; font-size:14px; color:var(--text2); line-height:1.75; }
 
-.big-freedom-breakdown { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:32px; }
-.bfb-item { background:var(--card); border:1px solid var(--border); padding:16px 12px; text-align:center; border-radius:2px; }
-.bfb-value { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--orange); letter-spacing:1px; margin-bottom:4px; }
-.bfb-label { font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; line-height:1.3; }
+.divider { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:3px; color:var(--orange); padding-bottom:8px; border-bottom:1px solid var(--border); margin-bottom:18px; }
 
-.section-divider { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:3px; color:var(--orange); padding-bottom:10px; border-bottom:1px solid var(--border); margin-bottom:20px; }
-.greeting-box { background:var(--card); border:1px solid var(--border); padding:22px 24px; margin-bottom:24px; border-radius:2px; }
-.greeting-box p { font-family:'Lora',serif; font-size:15px; color:var(--text2); line-height:1.75; }
+.opp { background:var(--card); border:1px solid var(--border); border-left:3px solid var(--orange); padding:22px; margin-bottom:14px; border-radius:2px; }
+.opp h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--cream); margin-bottom:3px; }
+.opp-earn { font-family:'Bebas Neue',sans-serif; font-size:15px; color:var(--green); letter-spacing:1px; margin-bottom:10px; }
+.opp p { font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:8px; }
+.first-step { background:var(--bg); border:1px solid var(--border); padding:12px 14px; border-radius:2px; }
+.fs-lbl { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:4px; font-weight:500; }
+.first-step p { font-size:13px; color:var(--text); margin:0; }
 
-.opp-card { background:var(--card); border:1px solid var(--border); border-left:3px solid var(--orange); padding:24px; margin-bottom:16px; border-radius:2px; }
-.opp-card h3 { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:1px; color:var(--cream); margin-bottom:4px; }
-.opp-earning { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--green); letter-spacing:1px; margin-bottom:12px; }
-.opp-card p { font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:10px; }
-.first-step { background:var(--bg2); border:1px solid var(--border); padding:14px 16px; border-radius:2px; }
-.first-step-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:5px; font-weight:500; }
-.first-step p { font-size:13px; color:var(--text); margin:0; line-height:1.6; }
+.locked { background:var(--card); border:1px solid var(--border); border-left:3px solid var(--border); padding:20px 22px; margin-bottom:12px; border-radius:2px; position:relative; overflow:hidden; }
+.locked::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,transparent 15%,var(--card) 85%); pointer-events:none; }
+.locked h3 { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--muted); margin-bottom:3px; }
+.locked-earn { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--border); letter-spacing:1px; margin-bottom:8px; }
+.locked p { font-size:14px; color:var(--border); filter:blur(3px); user-select:none; }
+.lock-badge { position:absolute; top:16px; right:16px; background:var(--border); color:var(--muted); font-size:10px; letter-spacing:2px; padding:3px 9px; border-radius:2px; z-index:2; }
 
-.locked-card {
-  background:var(--card); border:1px solid var(--border); border-left:3px solid var(--border-light);
-  padding:20px 24px; margin-bottom:12px; border-radius:2px; position:relative; overflow:hidden;
-}
-.locked-card::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,transparent 20%,var(--card) 90%); pointer-events:none; }
-.locked-card h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; color:var(--muted); margin-bottom:4px; }
-.locked-card .locked-earning { font-family:'Bebas Neue',sans-serif; font-size:15px; color:var(--border-light); letter-spacing:1px; margin-bottom:10px; }
-.locked-card p { font-size:14px; color:var(--border-light); line-height:1.7; filter:blur(3px); user-select:none; }
-.lock-badge { position:absolute; top:18px; right:18px; background:var(--border); color:var(--muted); font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:4px 10px; border-radius:2px; z-index:2; }
-
-.email-gate { background:var(--card2); border:1px solid var(--border); padding:32px 28px; text-align:center; margin-bottom:32px; border-radius:3px; }
-.email-gate h3 { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--cream); margin-bottom:10px; }
-.email-gate p { font-family:'Lora',serif; font-style:italic; font-size:14px; color:var(--text2); line-height:1.65; margin-bottom:22px; }
-.email-row { display:flex; max-width:420px; margin:0 auto 10px; }
-.email-row input[type="email"] {
-  flex:1; background:var(--bg); border:1px solid var(--border); border-right:none;
-  color:var(--cream); font-family:'DM Sans',sans-serif; font-size:14px;
-  padding:14px 16px; outline:none; border-radius:2px 0 0 2px;
-}
-.email-row input[type="email"]:focus { border-color:var(--orange); }
-.email-row input[type="email"]::placeholder { color:var(--muted); }
-.email-row button {
-  background:var(--orange); color:white; border:none; font-family:'Bebas Neue',sans-serif;
-  font-size:15px; letter-spacing:2px; padding:14px 20px; cursor:pointer;
-  white-space:nowrap; transition:background 0.2s; border-radius:0 2px 2px 0;
-}
+.gate { background:var(--card2); border:1px solid var(--border); padding:28px 24px; text-align:center; margin-bottom:28px; border-radius:3px; }
+.gate h3 { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:2px; color:var(--cream); margin-bottom:8px; }
+.gate p { font-family:'Lora',serif; font-style:italic; font-size:14px; color:var(--text2); line-height:1.6; margin-bottom:20px; }
+.email-row { display:flex; max-width:400px; margin:0 auto 8px; }
+.email-row input[type=email] { flex:1; background:var(--bg); border:1px solid var(--border); border-right:none; color:var(--cream); font-family:'DM Sans',sans-serif; font-size:14px; padding:13px 14px; outline:none; border-radius:2px 0 0 2px; }
+.email-row input[type=email]:focus { border-color:var(--orange); }
+.email-row input[type=email]::placeholder { color:var(--muted); }
+.email-row button { background:var(--orange); color:white; border:none; font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:2px; padding:13px 18px; cursor:pointer; white-space:nowrap; border-radius:0 2px 2px 0; transition:background 0.2s; }
 .email-row button:hover { background:#d14d15; }
-.email-fine-print { font-size:11px; color:var(--muted); }
+.fine { font-size:11px; color:var(--muted); }
 
-.unlocked-badge {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(111,207,151,0.1); border:1px solid rgba(111,207,151,0.2);
-  color:var(--green); font-size:10px; letter-spacing:2px; text-transform:uppercase;
-  padding:5px 12px; margin-bottom:20px; border-radius:2px;
-}
-.closing-card { background:var(--card); border:1px solid var(--border); padding:28px; text-align:center; margin-top:32px; border-radius:2px; }
-.closing-card p { font-family:'Lora',serif; font-style:italic; font-size:15px; color:var(--text2); line-height:1.75; margin-bottom:16px; }
-.slogan { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:4px; color:var(--orange); }
-.error-box { background:rgba(90,26,26,0.3); border:1px solid rgba(200,60,60,0.3); color:#f87171; padding:14px 18px; font-size:13px; line-height:1.5; margin-top:14px; border-radius:2px; }
+.unlocked-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(111,207,151,0.1); border:1px solid rgba(111,207,151,0.2); color:var(--green); font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:4px 10px; margin-bottom:16px; border-radius:2px; }
+
+.closing { background:var(--card); border:1px solid var(--border); padding:24px; text-align:center; margin-top:28px; border-radius:2px; }
+.closing p { font-family:'Lora',serif; font-style:italic; font-size:14px; color:var(--text2); line-height:1.75; margin-bottom:14px; }
+.slogan { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:4px; color:var(--orange); }
+
+.err { background:rgba(90,26,26,0.3); border:1px solid rgba(200,60,60,0.3); color:#f87171; padding:12px 16px; font-size:13px; line-height:1.5; margin-top:12px; border-radius:2px; }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 
 <div class="header">
-  <div class="header-eyebrow">✦ FREE TOOL BY @LATESTARTERAI</div>
-  <h1>THE UNFAIR<br><em>ADVANTAGE</em><br>FINDER</h1>
-  <p class="header-desc">Find out what your experience is actually worth — and exactly what you need to make life feel secure again.</p>
+  <div class="eyebrow">✦ FREE TOOL BY @LATESTARTERAI</div>
+  <h1>THE UNFAIR<br><span>ADVANTAGE</span><br>FINDER</h1>
+  <p class="tagline">Find out what your experience is actually worth — and exactly what you need to make life feel secure again.</p>
 </div>
 
-<div class="steps-row">
-  <div class="step-item">
-    <div class="step-circle active" id="dot-1">1</div>
-    <div class="step-label active" id="label-1">YOUR GAP</div>
+<div class="steps">
+  <div class="step">
+    <div class="step-circle on" id="sc1">1</div>
+    <div class="step-label on" id="sl1">YOUR GAP</div>
   </div>
-  <div class="step-line" id="line-1"></div>
-  <div class="step-item">
-    <div class="step-circle" id="dot-2">2</div>
-    <div class="step-label" id="label-2">YOUR STRENGTHS</div>
+  <div class="step-line" id="line1"></div>
+  <div class="step">
+    <div class="step-circle" id="sc2">2</div>
+    <div class="step-label" id="sl2">YOUR STRENGTHS</div>
   </div>
-  <div class="step-line" id="line-2"></div>
-  <div class="step-item">
-    <div class="step-circle" id="dot-3">3</div>
-    <div class="step-label" id="label-3">YOUR PLAN</div>
+  <div class="step-line" id="line2"></div>
+  <div class="step">
+    <div class="step-circle" id="sc3">3</div>
+    <div class="step-label" id="sl3">YOUR PLAN</div>
   </div>
 </div>
 
-<!-- SECTION 1 -->
-<div class="section active" id="section-1">
-  <div class="section-eyebrow">STEP 1 — YOUR FREEDOM NUMBER</div>
-  <div class="section-title">LET'S FIND OUT EXACTLY WHAT YOU NEED.</div>
-  <div class="section-sub">Not a 30-year retirement projection. Just the real number that would let you breathe again.</div>
+<!-- STEP 1 -->
+<div class="sec show" id="sec1">
+  <div class="sec-eye">STEP 1 — YOUR FREEDOM NUMBER</div>
+  <div class="sec-title">LET'S FIND THE REAL NUMBER.</div>
+  <div class="sec-sub">Not a 30-year projection. Just what you actually need to breathe again.</div>
 
-  <div class="two-col">
-    <div class="input-group">
-      <label class="input-label">Current Monthly Income</label>
-      <div class="input-wrap">
-        <span class="input-prefix">$</span>
-        <input type="number" id="income" placeholder="0" min="0" oninput="calcGap()">
-      </div>
+  <div class="two">
+    <div class="field">
+      <label class="label">Current Monthly Income</label>
+      <div class="pfx"><span class="pfx-sym">$</span><input type="number" id="income" placeholder="0" min="0" oninput="calc()"></div>
     </div>
-    <div class="input-group">
-      <label class="input-label">Monthly Amount You Need</label>
-      <div class="input-wrap">
-        <span class="input-prefix">$</span>
-        <input type="number" id="target" placeholder="0" min="0" oninput="calcGap()">
-      </div>
+    <div class="field">
+      <label class="label">Monthly Amount You Need</label>
+      <div class="pfx"><span class="pfx-sym">$</span><input type="number" id="target" placeholder="0" min="0" oninput="calc()"></div>
     </div>
   </div>
 
-  <div class="two-col">
-    <div class="input-group">
-      <label class="input-label">Your Age</label>
-      <input type="number" id="age" placeholder="e.g. 57" min="30" max="85" oninput="calcGap()" style="padding-left:16px">
+  <div class="two">
+    <div class="field">
+      <label class="label">Your Age</label>
+      <input type="number" id="age" placeholder="e.g. 57" min="30" max="85" oninput="calc()" style="padding-left:14px">
     </div>
-    <div class="input-group">
-      <label class="input-label">Years Until You Want to Stop</label>
-      <select id="years" onchange="calcGap()">
+    <div class="field">
+      <label class="label">Years Until You Want to Stop</label>
+      <select id="years" onchange="calc()">
         <option value="">Select...</option>
         <option value="2">2 years</option>
         <option value="3">3 years</option>
@@ -300,10 +217,10 @@ textarea::placeholder { color:var(--border-light); font-style:italic; }
     </div>
   </div>
 
-  <div class="input-group">
-    <label class="input-label">How Would You Describe Your Situation?</label>
-    <select id="situation" onchange="calcGap()">
-      <option value="">Select the one that fits best...</option>
+  <div class="field">
+    <label class="label">Your Situation Right Now</label>
+    <select id="situation" onchange="calc()">
+      <option value="">Select the one that fits...</option>
       <option value="laid_off">I was laid off or let go recently</option>
       <option value="worried">Still working but worried about the future</option>
       <option value="retiring">Approaching retirement with a gap to fill</option>
@@ -313,139 +230,115 @@ textarea::placeholder { color:var(--border-light); font-style:italic; }
     </select>
   </div>
 
-  <div class="freedom-display" id="freedom-display">
-    <div class="freedom-main">
-      <div class="freedom-label">YOUR FREEDOM NUMBER</div>
-      <div class="freedom-amount" id="freedom-amount">$0/mo</div>
-      <div class="freedom-message" id="freedom-message"></div>
+  <div class="freedom" id="freedom-box">
+    <div class="freedom-top">
+      <div class="freedom-lbl">YOUR FREEDOM NUMBER</div>
+      <div class="freedom-num" id="fn-amount">$0/mo</div>
+      <div class="freedom-msg" id="fn-msg"></div>
     </div>
-    <div class="freedom-breakdown">
-      <div class="breakdown-item">
-        <div class="breakdown-value" id="bd-weekly">—</div>
-        <div class="breakdown-label">Per Week</div>
-      </div>
-      <div class="breakdown-item">
-        <div class="breakdown-value" id="bd-total">—</div>
-        <div class="breakdown-label">Total Needed</div>
-      </div>
-      <div class="breakdown-item">
-        <div class="breakdown-value" id="bd-perday">—</div>
-        <div class="breakdown-label">Per Day</div>
-      </div>
+    <div class="freedom-grid">
+      <div class="fg-item"><div class="fg-val" id="fn-weekly">—</div><div class="fg-lbl">Per Week</div></div>
+      <div class="fg-item"><div class="fg-val" id="fn-total">—</div><div class="fg-lbl">Total Needed</div></div>
+      <div class="fg-item"><div class="fg-val" id="fn-day">—</div><div class="fg-lbl">Per Day</div></div>
     </div>
-    <div class="equivalents-row">
-      <div class="equivalents-label">WHAT THIS ACTUALLY LOOKS LIKE</div>
-      <div class="equivalents-chips" id="equiv-chips"></div>
+    <div class="chips">
+      <div class="chips-lbl">WHAT THIS ACTUALLY LOOKS LIKE</div>
+      <div class="chips-wrap" id="chips-wrap"></div>
     </div>
   </div>
 
-  <button class="btn-primary" id="btn-1" onclick="goTo(2)" disabled>FIND MY INCOME OPPORTUNITIES →</button>
+  <button class="btn" id="btn1" onclick="go(2)" disabled>FIND MY INCOME OPPORTUNITIES →</button>
 </div>
 
-<!-- SECTION 2 -->
-<div class="section" id="section-2">
-  <button class="btn-back" onclick="goTo(1)">← Back</button>
-  <div class="section-eyebrow">STEP 2 — YOUR HIDDEN STRENGTHS</div>
-  <div class="section-title">TELL ME WHAT YOU ACTUALLY KNOW.</div>
-  <div class="section-sub">Be real. Be specific. The more honest your answers, the more useful your results.</div>
+<!-- STEP 2 -->
+<div class="sec" id="sec2">
+  <button class="btn-back" onclick="go(1)">← Back</button>
+  <div class="sec-eye">STEP 2 — YOUR HIDDEN STRENGTHS</div>
+  <div class="sec-title">TELL ME WHAT YOU ACTUALLY KNOW.</div>
+  <div class="sec-sub">Be real. Be specific. The more honest your answers, the better your results.</div>
 
-  <div class="question-block">
-    <div class="question-num">QUESTION 01</div>
-    <div class="question-text">What did you spend most of your working life doing?</div>
-    <div class="question-hint">Job, field, industry — whatever feels most true. No fancy title needed.</div>
-    <textarea id="q1" placeholder="e.g. I was a nurse for 28 years. Mostly pediatric care. Before that I raised three kids and managed everything that came with that..." rows="3"></textarea>
+  <div class="q-block">
+    <div class="q-num">01</div>
+    <div class="q-text">What did you spend most of your working life doing?</div>
+    <div class="q-hint">Job, field, industry — whatever feels most true. No fancy title needed.</div>
+    <textarea id="q1" placeholder="e.g. I was a nurse for 28 years in pediatric care..." rows="3"></textarea>
+  </div>
+  <div class="q-block">
+    <div class="q-num">02</div>
+    <div class="q-text">What do people always ask your advice about?</div>
+    <div class="q-hint">Friends, family, coworkers. What problems land in your lap?</div>
+    <textarea id="q2" placeholder="e.g. Everyone asks me how to handle difficult conversations at work..." rows="3"></textarea>
+  </div>
+  <div class="q-block">
+    <div class="q-num">03</div>
+    <div class="q-text">What's a problem you've solved over and over that still exhausts other people?</div>
+    <div class="q-hint">Something obvious to you but clearly not to most people.</div>
+    <textarea id="q3" placeholder="e.g. Dealing with insurance companies. Getting a teenager to actually talk to you..." rows="3"></textarea>
+  </div>
+  <div class="q-block">
+    <div class="q-num">04</div>
+    <div class="q-text">What would you happily teach someone for free?</div>
+    <div class="q-hint">Inside or outside your career. Anything you know deeply and love sharing.</div>
+    <textarea id="q4" placeholder="e.g. How to read a room. How to cook real food on a budget..." rows="3"></textarea>
+  </div>
+  <div class="q-block">
+    <div class="q-num">05</div>
+    <div class="q-text">What did you get paid to KNOW — not just to do?</div>
+    <div class="q-hint">The judgment. The instinct. The thing a 25-year-old simply can't have yet.</div>
+    <textarea id="q5" placeholder="e.g. I could walk into any situation and know within 5 minutes where the real problem was..." rows="3"></textarea>
   </div>
 
-  <div class="question-block">
-    <div class="question-num">QUESTION 02</div>
-    <div class="question-text">What do people always ask your advice about?</div>
-    <div class="question-hint">Friends, family, coworkers. What problems land in your lap because people trust you with them?</div>
-    <textarea id="q2" placeholder="e.g. Everyone asks me how to handle difficult conversations at work, or how to spot when something is actually wrong vs just stress..." rows="3"></textarea>
-  </div>
-
-  <div class="question-block">
-    <div class="question-num">QUESTION 03</div>
-    <div class="question-text">What's a problem you've solved over and over that still exhausts other people?</div>
-    <div class="question-hint">Something that feels obvious to you but clearly isn't to most people.</div>
-    <textarea id="q3" placeholder="e.g. Dealing with insurance companies. Organizing a complicated move. Getting a teenager to actually talk to you..." rows="3"></textarea>
-  </div>
-
-  <div class="question-block">
-    <div class="question-num">QUESTION 04</div>
-    <div class="question-text">What would you happily teach someone for free?</div>
-    <div class="question-hint">Inside or outside your career. Anything you know deeply and love sharing.</div>
-    <textarea id="q4" placeholder="e.g. How to read a room. How to cook real food on a budget. How to negotiate without feeling like a jerk..." rows="3"></textarea>
-  </div>
-
-  <div class="question-block">
-    <div class="question-num">QUESTION 05</div>
-    <div class="question-text">What did you get paid to KNOW — not just to do?</div>
-    <div class="question-hint">The judgment. The instinct. The thing a 25-year-old simply can't have yet.</div>
-    <textarea id="q5" placeholder="e.g. I could walk into any situation and know within 5 minutes where the real problem was. That took 20 years to build..." rows="3"></textarea>
-  </div>
-
-  <div id="error-2" class="error-box" style="display:none">Please answer all 5 questions before continuing.</div>
-  <button class="btn-primary" onclick="goTo(3)">SHOW ME WHAT I'M WORTH →</button>
+  <div id="err2" class="err" style="display:none">Please answer all 5 questions before continuing.</div>
+  <button class="btn" onclick="go(3)">SHOW ME WHAT I'M WORTH →</button>
 </div>
 
-<!-- SECTION 3 -->
-<div class="section" id="section-3">
-  <div id="loading-screen" class="loading-screen">
-    <div class="loading-ring"></div>
+<!-- STEP 3 -->
+<div class="sec" id="sec3">
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
     <div class="loading-title">ANALYZING YOUR EXPERIENCE</div>
-    <div class="loading-sub">Finding income opportunities specific to what you told me.<br>Give me a moment...</div>
+    <div class="loading-sub">Finding income opportunities specific to what you told me...</div>
   </div>
 
-  <div id="results-screen" style="display:none">
-    <button class="btn-back" onclick="goTo(2)">← Back</button>
+  <div id="results" style="display:none">
+    <button class="btn-back" onclick="go(2)">← Back</button>
 
-    <div class="big-freedom-box">
-      <div class="label">YOUR FREEDOM NUMBER</div>
-      <div class="number" id="result-fn">$0/mo</div>
-      <div class="sub" id="result-fn-sub">That's what we're solving. Nothing more.</div>
+    <div class="big-fn">
+      <div class="lbl">YOUR FREEDOM NUMBER</div>
+      <div class="num" id="r-fn">$0/mo</div>
+      <div class="sub" id="r-fn-sub">That's what we're solving. Nothing more.</div>
     </div>
 
-    <div class="big-freedom-breakdown">
-      <div class="bfb-item">
-        <div class="bfb-value" id="r-weekly">—</div>
-        <div class="bfb-label">Per Week</div>
-      </div>
-      <div class="bfb-item">
-        <div class="bfb-value" id="r-perday">—</div>
-        <div class="bfb-label">Per Day</div>
-      </div>
-      <div class="bfb-item">
-        <div class="bfb-value" id="r-total">—</div>
-        <div class="bfb-label">Total Over Your Timeline</div>
-      </div>
+    <div class="bk3">
+      <div class="bk3-item"><div class="bk3-val" id="r-weekly">—</div><div class="bk3-lbl">Per Week</div></div>
+      <div class="bk3-item"><div class="bk3-val" id="r-day">—</div><div class="bk3-lbl">Per Day</div></div>
+      <div class="bk3-item"><div class="bk3-val" id="r-total">—</div><div class="bk3-lbl">Total Over Timeline</div></div>
     </div>
 
-    <div class="greeting-box">
-      <p id="greeting-text"></p>
-    </div>
+    <div class="greet"><p id="greet-text"></p></div>
 
-    <div class="section-divider">YOUR INCOME OPPORTUNITIES</div>
-    <div id="opp-1-container"></div>
+    <div class="divider">YOUR INCOME OPPORTUNITIES</div>
+    <div id="opp1"></div>
 
-    <div id="locked-section">
-      <div id="locked-cards-container"></div>
-      <div class="email-gate">
+    <div id="locked-area">
+      <div id="locked-cards"></div>
+      <div class="gate">
         <h3>UNLOCK YOUR OTHER 2 OPPORTUNITIES</h3>
-        <p>Enter your email to see the full picture — your best income matches and your specific first steps. Free. No spam.</p>
+        <p>Enter your email to see the full picture — your best income matches and specific first steps. Free. No spam.</p>
         <div class="email-row">
           <input type="email" id="gate-email" placeholder="your@email.com">
-          <button onclick="unlockResults()">UNLOCK FREE →</button>
+          <button onclick="unlock()">UNLOCK FREE →</button>
         </div>
-        <div class="email-fine-print">Joins The Unfair Advantage — weekly newsletter by @latestarterai. Unsubscribe anytime.</div>
-        <div id="email-error" class="error-box" style="display:none;margin-top:12px;text-align:left">Please enter a valid email address.</div>
+        <div class="fine">Joins The Unfair Advantage newsletter by @latestarterai. Unsubscribe anytime.</div>
+        <div id="gate-err" class="err" style="display:none;text-align:left;margin-top:10px">Please enter a valid email.</div>
       </div>
     </div>
 
-    <div id="unlocked-section" style="display:none">
-      <div class="unlocked-badge">✓ UNLOCKED — ALL 3 OPPORTUNITIES</div>
-      <div id="opp-2-container" style="margin-bottom:16px"></div>
-      <div id="opp-3-container" style="margin-bottom:16px"></div>
-      <div class="closing-card">
+    <div id="unlocked-area" style="display:none">
+      <div class="unlocked-badge">✓ ALL 3 OPPORTUNITIES UNLOCKED</div>
+      <div id="opp2" style="margin-bottom:14px"></div>
+      <div id="opp3" style="margin-bottom:14px"></div>
+      <div class="closing">
         <p id="closing-text"></p>
         <div class="slogan">LATE START. UNFAIR ADVANTAGE.</div>
       </div>
@@ -454,204 +347,174 @@ textarea::placeholder { color:var(--border-light); font-style:italic; }
 </div>
 
 </div>
+
 <script>
-let gapData = {};
-let aiResults = null;
+var gd = {};
+var aiData = null;
 
-function calcGap() {
-  const income = parseFloat(document.getElementById('income').value) || 0;
-  const target = parseFloat(document.getElementById('target').value) || 0;
-  const age    = parseInt(document.getElementById('age').value)      || 0;
-  const years  = parseInt(document.getElementById('years').value)    || 0;
-  const sit    = document.getElementById('situation').value;
-  const gap    = Math.max(0, target - income);
-  const weekly = gap > 0 ? Math.round(gap / 4.33) : 0;
-  const perDay = gap > 0 ? Math.round(gap / 30)   : 0;
-  const total  = gap > 0 && years > 0 ? gap * 12 * years : 0;
+function calc() {
+  var inc = parseFloat(document.getElementById('income').value) || 0;
+  var tgt = parseFloat(document.getElementById('target').value) || 0;
+  var yrs = parseInt(document.getElementById('years').value) || 0;
+  var sit = document.getElementById('situation').value;
+  var gap = Math.max(0, tgt - inc);
+  var wk = gap > 0 ? Math.round(gap / 4.33) : 0;
+  var dy = gap > 0 ? Math.round(gap / 30) : 0;
+  var tot = gap > 0 && yrs > 0 ? gap * 12 * yrs : 0;
+  gd = { inc:inc, tgt:tgt, gap:gap, yrs:yrs, sit:sit, wk:wk, dy:dy, tot:tot };
 
-  gapData = { income, target, gap, age, years, situation: sit, weekly, perDay, total };
+  if (inc > 0 || tgt > 0) {
+    document.getElementById('freedom-box').className = 'freedom show';
+    document.getElementById('fn-amount').textContent = '$' + gap.toLocaleString() + '/mo';
+    document.getElementById('fn-weekly').textContent = wk > 0 ? '$' + wk.toLocaleString() : '—';
+    document.getElementById('fn-total').textContent = tot > 0 ? '$' + Math.round(tot/1000) + 'K' : '—';
+    document.getElementById('fn-day').textContent = dy > 0 ? '$' + dy.toLocaleString() : '—';
 
-  if (income > 0 || target > 0) {
-    document.getElementById('freedom-display').classList.add('visible');
-    document.getElementById('freedom-amount').textContent = '$' + gap.toLocaleString() + '/mo';
-    document.getElementById('bd-weekly').textContent = weekly > 0 ? '$' + weekly.toLocaleString() : '—';
-    document.getElementById('bd-total').textContent  = total  > 0 ? '$' + Math.round(total/1000) + 'K' : '—';
-    document.getElementById('bd-perday').textContent = perDay > 0 ? '$' + perDay.toLocaleString() : '—';
-
-    let msg = '';
+    var msg = '';
     if (gap === 0) msg = "You're already at your number. These opportunities are your upgrade.";
-    else if (gap <= 300) msg = "That's one client. One small product. One consulting call a week. This is closer than you think.";
-    else if (gap <= 800) msg = "A number with a name is a problem you can solve. One or two income streams could close this completely.";
-    else if (gap <= 2000) msg = "Bigger gap — but your experience is bigger too. This is exactly the kind of number a skilled person can close with AI.";
-    else msg = "A serious gap that needs a serious strategy. Your experience is the raw material. AI is the multiplier. Let's find the match.";
-    if (sit === 'laid_off') msg = "Being laid off is terrifying. But it's also the moment that forces a change you probably needed. You have more leverage right now than you realize.";
-    if (sit === 'starting_over') msg = "Starting over is hard. It's also the only time you get to build exactly what you want. Your experience doesn't disappear — it just needs a new container.";
-    document.getElementById('freedom-message').textContent = msg;
+    else if (gap <= 300) msg = "That's one client. One small product. This is closer than you think.";
+    else if (gap <= 800) msg = "A number with a name is a problem you can solve. One or two income streams could close this.";
+    else if (gap <= 2000) msg = "Bigger gap — but your experience is bigger too. This is the kind of number a skilled person closes with AI.";
+    else msg = "A serious gap that needs a serious strategy. Your experience is the raw material. AI is the multiplier.";
+    if (sit === 'laid_off') msg = "Being laid off is terrifying. But you have more leverage right now than you realize.";
+    if (sit === 'starting_over') msg = "Starting over is hard. It's also the only time you get to build exactly what you want.";
+    document.getElementById('fn-msg').textContent = msg;
 
-    const chips = document.getElementById('equiv-chips');
-    chips.innerHTML = '';
+    var cw = document.getElementById('chips-wrap');
+    cw.innerHTML = '';
     if (gap > 0) {
-      const consulting = Math.ceil(gap / 150);
-      const ebook      = Math.ceil(gap / 27);
-      const clients    = Math.ceil(gap / 500);
-      const workshops  = Math.ceil(gap / 300);
-      [
-        consulting + (consulting === 1 ? ' consulting call' : ' consulting calls'),
-        ebook + ' ebook sales at $27',
-        clients + (clients === 1 ? ' retainer client' : ' retainer clients'),
-        workshops + (workshops === 1 ? ' workshop' : ' workshops'),
-      ].forEach(a => {
-        const c = document.createElement('div');
+      var items = [
+        Math.ceil(gap/150) + ' consulting calls',
+        Math.ceil(gap/27) + ' ebook sales at $27',
+        Math.ceil(gap/500) + ' retainer clients',
+        Math.ceil(gap/300) + ' workshops'
+      ];
+      items.forEach(function(t) {
+        var c = document.createElement('div');
         c.className = 'chip';
-        c.textContent = a;
-        chips.appendChild(c);
+        c.textContent = t;
+        cw.appendChild(c);
       });
     }
-
-    document.getElementById('btn-1').disabled = false;
+    document.getElementById('btn1').disabled = false;
   }
 }
 
-function goTo(step) {
+function go(step) {
   if (step === 3) {
-    const empty = ['q1','q2','q3','q4','q5'].some(id => document.getElementById(id).value.trim().length < 8);
-    if (empty) { document.getElementById('error-2').style.display = 'block'; return; }
-    document.getElementById('error-2').style.display = 'none';
+    var qs = ['q1','q2','q3','q4','q5'];
+    var empty = qs.some(function(id) { return document.getElementById(id).value.trim().length < 8; });
+    if (empty) { document.getElementById('err2').style.display = 'block'; return; }
+    document.getElementById('err2').style.display = 'none';
   }
-  for (let i = 1; i <= 3; i++) {
-    document.getElementById('dot-' + i).className   = 'step-circle' + (i < step ? ' done' : i === step ? ' active' : '');
-    document.getElementById('label-' + i).className = 'step-label'  + (i === step ? ' active' : '');
+
+  // Update stepper
+  for (var i = 1; i <= 3; i++) {
+    var sc = document.getElementById('sc' + i);
+    var sl = document.getElementById('sl' + i);
+    sc.className = 'step-circle' + (i < step ? ' done' : i === step ? ' on' : '');
+    sl.className = 'step-label' + (i === step ? ' on' : '');
   }
-  for (let i = 1; i <= 2; i++) {
-    document.getElementById('line-' + i).className = 'step-line' + (i < step ? ' done' : '');
+  for (var j = 1; j <= 2; j++) {
+    document.getElementById('line' + j).className = 'step-line' + (j < step ? ' done' : '');
   }
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById('section-' + step).classList.add('active');
-  window.scrollTo({ top:0, behavior:'smooth' });
+
+  // Show/hide sections
+  document.getElementById('sec1').className = 'sec' + (step === 1 ? ' show' : '');
+  document.getElementById('sec2').className = 'sec' + (step === 2 ? ' show' : '');
+  document.getElementById('sec3').className = 'sec' + (step === 3 ? ' show' : '');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
   if (step === 3) runAnalysis();
 }
 
-async function runAnalysis() {
-  document.getElementById('loading-screen').style.display = 'block';
-  document.getElementById('results-screen').style.display = 'none';
+function runAnalysis() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
 
-  const q1 = document.getElementById('q1').value.trim();
-  const q2 = document.getElementById('q2').value.trim();
-  const q3 = document.getElementById('q3').value.trim();
-  const q4 = document.getElementById('q4').value.trim();
-  const q5 = document.getElementById('q5').value.trim();
-  const { gap, weekly, perDay, total, years, situation } = gapData;
+  var q1 = document.getElementById('q1').value.trim();
+  var q2 = document.getElementById('q2').value.trim();
+  var q3 = document.getElementById('q3').value.trim();
+  var q4 = document.getElementById('q4').value.trim();
+  var q5 = document.getElementById('q5').value.trim();
+  var gap = gd.gap || 0;
+  var wk = gd.wk || 0;
+  var sit = gd.sit || '';
+  var yrs = gd.yrs || 0;
 
-  const sitMap = { laid_off:'recently laid off', worried:'still working but worried about the future', retiring:'approaching retirement with a gap to fill', supplementing:'looking to supplement existing income', starting_over:'starting over after a major life change', curious:'exploring what is possible' };
+  var sitMap = { laid_off:'recently laid off', worried:'still working but worried', retiring:'approaching retirement', supplementing:'supplementing income', starting_over:'starting over', curious:'exploring options' };
 
-  const system = `You are Joe Shalita — a 60-year-old former professional musician turned AI income coach. You learned AI at 59 on a phone with zero tech background. You help people with deep life experience turn what they know into income using AI.
+  var sys = 'You are Joe Shalita — a 60-year-old former musician turned AI income coach. You learned AI at 59 on your phone with zero tech background. You help people with deep life experience turn what they know into income using AI.\n\nVoice: warm, direct, no fluff. Like a straight-talking friend who has been through it.\n\nRespond ONLY with a valid JSON object. No preamble. No markdown. No backticks. Raw JSON only.\n\n{"greeting":"2-3 sentences making this person feel seen. Reference something specific from their answers.","opportunities":[{"title":"Short name","monthlyRange":"$X-$Y/mo","why":"Why their background qualifies them. Be specific.","how":"How this works in practice.","firstStep":"One concrete action in 48 hours."}],"closingMessage":"2 sentences. Reference their freedom number of $' + gap + '/month."}\n\nGenerate exactly 3 opportunities. Vary types — mix service, digital product, knowledge-based. Realistic ranges. Together they should plausibly cover $' + gap + '/month over 3-6 months.';
 
-Voice: warm, direct, no-fluff, occasionally funny. Like a straight-talking friend who has been through it. You believe experience is the most undervalued asset most people have.
+  var usr = 'Freedom number: $' + gap + '/mo | Weekly: $' + wk + ' | Situation: ' + (sitMap[sit]||'exploring') + ' | Timeline: ' + (yrs > 0 ? yrs+' years' : 'not specified') + '\n\n1. Working life: ' + q1 + '\n2. Advice about: ' + q2 + '\n3. Problem solved repeatedly: ' + q3 + '\n4. Would teach for free: ' + q4 + '\n5. Paid to KNOW: ' + q5;
 
-Respond ONLY with a valid JSON object. No preamble. No markdown. No backticks. Raw JSON only.
-
-{
-  "greeting": "2-3 sentences. Make this person feel genuinely seen. Reference something specific from their answers. Warm but honest — not fake.",
-  "opportunities": [
-    {
-      "title": "Short punchy name for this income opportunity",
-      "monthlyRange": "$X–$Y/mo",
-      "why": "1-2 sentences on why THEIR specific background qualifies them. Be specific to what they wrote.",
-      "how": "2-3 sentences on how this works in practice.",
-      "firstStep": "One concrete action they can take in the next 48 hours. Specific. Not 'research this.'"
-    }
-  ],
-  "closingMessage": "2 sentences. Honest and grounding. Reference their freedom number of $${gap}/month. Make it feel possible without being fake."
+  fetch('/api/claude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system: sys, messages: [{ role: 'user', content: usr }] })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var raw = (data.content || []).map(function(b) { return b.text || ''; }).join('');
+    var clean = raw.replace(/```json|```/g, '').trim();
+    aiData = JSON.parse(clean);
+    showResults(aiData);
+  })
+  .catch(function(e) {
+    document.getElementById('loading').innerHTML = '<div class="err">Something went wrong. Please go back and try again.<br><small>' + e.message + '</small></div><button class="btn-back" style="margin-top:16px" onclick="go(2)">← Go Back</button>';
+  });
 }
 
-Generate exactly 3 opportunities. Specific to this person. Vary the types — mix a service, a digital product, and a knowledge-based stream. Keep ranges realistic. Together they should plausibly cover $${gap}/month over 3-6 months.`;
-
-  const user = `Freedom number: $${gap}/month | Weekly: $${weekly} | Situation: ${sitMap[situation]||'exploring'} | Timeline: ${years > 0 ? years+' years' : 'not specified'}
-
-1. Working life: ${q1}
-2. People ask advice about: ${q2}
-3. Problem solved repeatedly: ${q3}
-4. Would teach for free: ${q4}
-5. Paid to KNOW: ${q5}`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system, messages:[{role:'user',content:user}] })
-    });
-    const data = await res.json();
-    const raw = data.content.map(b => b.text||'').join('');
-    aiResults = JSON.parse(raw.replace(/```json|```/g,'').trim());
-    renderResults(aiResults);
-  } catch(e) {
-    document.getElementById('loading-screen').innerHTML = '<div class="error-box">Something went wrong. Please go back and try again.</div><button class="btn-back" style="margin-top:20px" onclick="goTo(2)">← Go Back</button>';
-  }
+function oppCard(o) {
+  return '<div class="opp"><h3>' + o.title + '</h3><div class="opp-earn">' + o.monthlyRange + '</div><p>' + o.why + '</p><p>' + o.how + '</p><div class="first-step"><div class="fs-lbl">YOUR FIRST STEP — DO THIS IN 48 HOURS</div><p>' + o.firstStep + '</p></div></div>';
 }
 
-function buildOppCard(opp) {
-  if (!opp) return '';
-  return `<div class="opp-card">
-    <h3>${opp.title||''}</h3>
-    <div class="opp-earning">${opp.monthlyRange||''}</div>
-    <p>${opp.why||''}</p>
-    <p>${opp.how||''}</p>
-    <div class="first-step">
-      <div class="first-step-label">YOUR FIRST STEP — DO THIS IN 48 HOURS</div>
-      <p>${opp.firstStep||''}</p>
-    </div>
-  </div>`;
+function lockedCard(o) {
+  return '<div class="locked"><div class="lock-badge">🔒 LOCKED</div><h3>' + o.title + '</h3><div class="locked-earn">' + o.monthlyRange + '</div><p>' + o.why + ' ' + o.how + '</p></div>';
 }
 
-function buildLockedCard(opp) {
-  if (!opp) return '';
-  return `<div class="locked-card">
-    <div class="lock-badge">🔒 LOCKED</div>
-    <h3>${opp.title||'Income Opportunity'}</h3>
-    <div class="locked-earning">${opp.monthlyRange||''}</div>
-    <p>${(opp.why||'')+' '+(opp.how||'')}</p>
-  </div>`;
+function showResults(data) {
+  var gap = gd.gap || 0, wk = gd.wk || 0, dy = gd.dy || 0, tot = gd.tot || 0;
+
+  document.getElementById('r-fn').textContent = '$' + gap.toLocaleString() + '/mo';
+  document.getElementById('r-fn-sub').textContent = gap === 0 ? "You're already covered. These are your upgrades." : "That's what we're solving. Nothing more.";
+  document.getElementById('r-weekly').textContent = wk > 0 ? '$' + wk.toLocaleString() : '—';
+  document.getElementById('r-day').textContent = dy > 0 ? '$' + dy.toLocaleString() : '—';
+  document.getElementById('r-total').textContent = tot > 0 ? '$' + Math.round(tot/1000) + 'K' : '—';
+
+  document.getElementById('greet-text').textContent = data.greeting || '';
+
+  var opps = data.opportunities || [];
+  document.getElementById('opp1').innerHTML = opps[0] ? oppCard(opps[0]) : '';
+  document.getElementById('locked-cards').innerHTML = (opps[1] ? lockedCard(opps[1]) : '') + (opps[2] ? lockedCard(opps[2]) : '');
+  document.getElementById('opp2').innerHTML = opps[1] ? oppCard(opps[1]) : '';
+  document.getElementById('opp3').innerHTML = opps[2] ? oppCard(opps[2]) : '';
+  document.getElementById('closing-text').textContent = data.closingMessage || '';
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function renderResults(data) {
-  const { gap, weekly, perDay, total } = gapData;
-  document.getElementById('result-fn').textContent     = '$' + gap.toLocaleString() + '/mo';
-  document.getElementById('result-fn-sub').textContent = gap === 0 ? "You're already covered. These opportunities are your upgrade." : "That's what we're solving for. Nothing more, nothing less.";
-  document.getElementById('r-weekly').textContent  = weekly > 0 ? '$' + weekly.toLocaleString() : '—';
-  document.getElementById('r-perday').textContent  = perDay > 0 ? '$' + perDay.toLocaleString() : '—';
-  document.getElementById('r-total').textContent   = total  > 0 ? '$' + Math.round(total/1000)+'K' : '—';
-  document.getElementById('greeting-text').textContent = data.greeting || '';
-
-  const opps = data.opportunities || [];
-  document.getElementById('opp-1-container').innerHTML      = buildOppCard(opps[0]);
-  document.getElementById('locked-cards-container').innerHTML = [opps[1],opps[2]].map(buildLockedCard).join('');
-  document.getElementById('opp-2-container').innerHTML      = buildOppCard(opps[1]);
-  document.getElementById('opp-3-container').innerHTML      = buildOppCard(opps[2]);
-  document.getElementById('closing-text').textContent       = data.closingMessage || '';
-
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('results-screen').style.display = 'block';
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-async function unlockResults() {
-  const email = document.getElementById('gate-email').value.trim();
-  const errEl = document.getElementById('email-error');
+function unlock() {
+  var email = document.getElementById('gate-email').value.trim();
+  var err = document.getElementById('gate-err');
   if (!email || !email.includes('@') || !email.includes('.')) {
-    errEl.style.display = 'block';
-    errEl.textContent = 'Please enter a valid email address.';
+    err.style.display = 'block';
     return;
   }
-  errEl.style.display = 'none';
-  try {
-    await fetch('https://api.beehiiv.com/v2/publications/pub_78fa4e0e-a9c8-4d35-aab1-d2adeafc6a90/subscriptions', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ email, reactivate_existing:true, send_welcome_email:true })
-    });
-  } catch(e) { /* silent fail */ }
-  document.getElementById('locked-section').style.display   = 'none';
-  document.getElementById('unlocked-section').style.display = 'block';
-  document.getElementById('unlocked-section').scrollIntoView({ behavior:'smooth', block:'start' });
+  err.style.display = 'none';
+
+  fetch('/api/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email })
+  }).catch(function() {});
+
+  document.getElementById('locked-area').style.display = 'none';
+  document.getElementById('unlocked-area').style.display = 'block';
+  document.getElementById('unlocked-area').scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 </body>
